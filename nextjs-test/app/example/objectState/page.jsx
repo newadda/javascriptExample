@@ -1,5 +1,11 @@
 "use client";
+
+/**
+ * Object의 변경을 아는 방법법
+ */
+
 import { useState } from "react";
+
 
 const handler = {
     set(target, prop, value) {

@@ -1,5 +1,11 @@
 "use client";
 
+/**
+ * 커스텀 콤포넌트 Slot 
+ * 
+ */
+
+
 import React, { useState } from "react";
 
 const Card = (props)=>{
