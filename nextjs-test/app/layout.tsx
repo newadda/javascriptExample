@@ -1,9 +1,14 @@
+"use client"
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 
+import { I18nProvider } from "./providers/i18nProvider";
 
+
+/*
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -24,19 +29,33 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-
-
-  console.log("최상단")
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <p>최상단 레이아웃</p>
         {children}
-
       </body>
     </html>
   );
+}
+
+*/
+
+export default function ClientLayout({ children }: { children: React.ReactNode }) {
+
+  //const { t } = useTranslations() // 'common' namespace 사용
+  //console.log(t)
+
+
+  return (
+    <html>
+        <body>
+        <I18nProvider >
+          {children}
+        </I18nProvider >
+    </body>
+    </html>
+  );
+  
 }

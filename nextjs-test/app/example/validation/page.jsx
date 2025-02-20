@@ -9,7 +9,7 @@
  * 
  */
 
-import { useForm } from "react-hook-form";
+import { useForm ,useWatch } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
@@ -51,24 +51,35 @@ export default function SignupForm() {
         register,
         handleSubmit,
         formState: { errors },
-        watch,
+        watch, // const uname = watch("username") 을 통해 필드의 값을 가져올 수 있다. 입력값이 변경될 때마다 자동으로 값이 업데이트됨, 
+                //   입력된 값을 UI에 반영할 때 유용 예) <p>{uname}</>
+        getValues , // getValues("username") 을 통해 필드의 값을 가져올 수 있다. 이벤트 기반 내부코드에서 가져올때 사용
         trigger, /* 
                  유효성 검사를 트리거하는 함수
                  특정 유효성을 검증가능하다. tirger("특정 스키마 키키")
                  onChange={()=>tirger(schema의 키 이름)}, 키가 없을 경우 모든 schema 키를 확인한다.
                  */
+        reset, // 초기값등 설정할 수 있다. 예) reset({sername: "홍길동"}) 
+        control,
       } = useForm({
         resolver: yupResolver(schema),
-       // mode: "onChange", // form내의 input 컴포넌트의 onChange가 발생시 행한다. 입력할 때마다 자동 검증,  onChange=<form {()=>tirger(schema의 키 이름)}}> 과 같은 의미이다.
+        defaultValues: {
+            username: "홍길동", // 초기값 설정
+          },
+        //mode: "onChange", // form내의 input 컴포넌트의 onChange가 발생시 행한다. 입력할 때마다 자동 검증,  onChange=<form {()=>tirger(schema의 키 이름)}}> 과 같은 의미이다.
       });
+
+
+      // 필드값 가져오기
+    const watchUsername = watch("username"); //입력값이 변경될 때마다 즉시 반영
+    const useWatchUsername = useWatch({ control, name: "username" }); // 입력값을 감지하지만 리렌더링 최적화, watch보다 성능 최적화
 
 
       
   const onSubmit = (data) => {
     console.log("입력된 데이터:", data);
-    const watchedValues = watch();
- 
   };
+
 
   return (
     <div className="p-4 max-w-md mx-auto border rounded-md shadow-md">
@@ -76,7 +87,9 @@ export default function SignupForm() {
       <form onSubmit={handleSubmit(onSubmit)}   className="space-y-3">
         <div>
           <label className="block font-medium">아이디</label>
-          <input {...register("username")} className="border p-2 w-full rounded-md" />
+          <input  {...register("username")} className="border p-2 w-full rounded-md"  />
+          <p>watch : {watchUsername}</p>
+          <p>useWatch : {useWatchUsername}</p>
           {errors.username && <p className="text-red-500 text-sm">{errors.username.message}</p>}
         
         </div>
